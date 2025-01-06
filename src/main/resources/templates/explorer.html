@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <h2>메시지를 발송할 테넌트에 속한 api-token 과 , 로 구분되는 csv 를 넣어주세요.</h2>
+    <form action="/preview-message" method="post" enctype="multipart/form-data">
+        보낼 메시지에 대한 csv 데이터 : <input type="file" name="csv"/> </br>
+        메시지를 보내는 사용자의 토큰 : <input type="text" name="token"> </br>
+        <button type="submit">제출</button>
+    </form>
+    <div>
+        <h3> Preview </h3>
+        <p> 다음과 같은 내용으로 메시지가 발송될 예정입니다. 토큰과 함께 확인해주세요 : <span th:text="${token}"></span></p>
+        <p> 메시지를 보내시려면 아래에 API 토큰을 다시 입력하시고 발신 버튼을 눌러주세요</p>
+        <form action="/send-message" method="post">
+            토큰 : <input type="text" name="token">
+            <button type="submit">제출</button>
+        </form>
+        <div th:if="${messages}">
+            <div th:each="message : ${messages}">
+                <p>
+                    수신인
+                    ID : <span th:text="${message.getKey().getKey()}"></span>,
+                    Name : <span th:text="${message.getKey().getValue()}"></span>
+                </p>
+                <pre th:text="${message.getValue()}"></pre>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
