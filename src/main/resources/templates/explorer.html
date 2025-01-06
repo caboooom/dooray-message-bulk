@@ -2,36 +2,69 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Preview</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div>
-    <h2>메시지를 발송할 테넌트에 속한 api-token 과 , 로 구분되는 csv 를 넣어주세요.</h2>
-    <form action="/preview-message" method="post" enctype="multipart/form-data">
-        보낼 메시지에 대한 csv 데이터 : <input type="file" name="csv"/> </br>
-        메시지를 보내는 사용자의 토큰 : <input type="text" name="token"> </br>
-        <button type="submit">제출</button>
-    </form>
-    <div>
-        <h3> Preview </h3>
-        <p> 다음과 같은 내용으로 메시지가 발송될 예정입니다. 토큰과 함께 확인해주세요 : <span th:text="${token}"></span></p>
-        <p> 메시지를 보내시려면 아래에 API 토큰을 다시 입력하시고 발신 버튼을 눌러주세요</p>
-        <form action="/send-message" method="post">
-            토큰 : <input type="text" name="token">
-            <button type="submit">제출</button>
-        </form>
-        <div th:if="${messages}">
-            <div th:each="message : ${messages}">
-                <p>
-                    수신인
-                    ID : <span th:text="${message.getKey().getKey()}"></span>,
-                    Name : <span th:text="${message.getKey().getValue()}"></span>
-                </p>
-                <pre th:text="${message.getValue()}"></pre>
+<div class="container my-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="card-title">API Token 및 CSV 사전 확인</h2>
+        </div>
+        <div class="card-body">
+            <form action="/preview-message" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="csv" class="form-label">보낼 메시지에 대한 CSV 데이터:</label>
+                    <input type="file" name="csv" id="csv" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="token" class="form-label">메시지를 보내는 사용자의 토큰:</label>
+                    <input type="text" name="token" id="token" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">제출</button>
+            </form>
+        </div>
+        <div class="card-footer">
+            <h5>
+                <a href="MASKED_LINK" target="_blank" class="text-decoration-none">토큰 발급 화면</a>
+            </h5>
+            <h5>
+                <a href="MASKED_LINK" target="_blank" class="text-decoration-none">CSV 샘플</a>
+            </h5>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-header bg-secondary text-white">
+            <h3 class="card-title">Preview</h3>
+        </div>
+        <div class="card-body">
+            <p class="mb-3">다음과 같은 내용으로 메시지가 발송될 예정입니다. 토큰과 함께 확인해주세요: <span th:text="${token}"></span></p>
+            <p>메시지를 보내시려면 아래에 API 토큰을 다시 입력하시고 발신 버튼을 눌러주세요.</p>
+
+            <form action="/send-message" method="post" class="mb-3">
+                <div class="mb-3">
+                    <label for="tokenSend" class="form-label">토큰:</label>
+                    <input type="text" name="token" id="tokenSend" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">발신</button>
+            </form>
+
+            <div th:if="${messages}" class="mt-4">
+                <h5>메시지 목록:</h5>
+                <div th:each="message : ${messages}" class="border p-3 mb-3">
+                    <p class="mb-1">
+                        <strong>수신인 ID:</strong> <span th:text="${message.getKey().getKey()}"></span>,
+                        <strong>Name:</strong> <span th:text="${message.getKey().getValue()}"></span>
+                    </p>
+                    <pre th:text="${message.getValue()}" class="bg-light p-2"></pre>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
